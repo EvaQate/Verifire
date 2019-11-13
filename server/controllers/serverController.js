@@ -19,7 +19,7 @@ userController.getAllUsers=(req,res,next) => {
 // @param res -http Server Response
 userController.createUser = (req,res,next) => {
     const { username, password }=req.body
-    User.create({{username,password} , (err,doc) => {
+    User.create({username,password} , (err,doc) => {
         if(err){
             return res.render('./../client/signup',{error: `{req.body.username} already exists`})
 
