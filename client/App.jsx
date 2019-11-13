@@ -7,8 +7,8 @@ import './assets/styles.scss'
 import MainContainer from "./containers/MainContainer.jsx";
 
 
-const io=require('socket.io-client')
-const socket=io('http://localhost:3000')
+const io=require('socket.io').listen(3000)
+// const socket=io('http://localhost:3000')
 //We used functional components throughout the application so we could utilize hooks
     //functional components don't require you to make constructors
     //they also don't need to have a super as a result

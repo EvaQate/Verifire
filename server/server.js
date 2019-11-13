@@ -4,10 +4,11 @@ const path = require('path');
 const bodyParser=require('body-parser')
 
 const http = require("http").createServer(app);
-const io=require('socket.io')(http)
 //new Server() is the same
 
+
 const PORT = 3000;
+const io=require('socket.io').listen(PORT)
 
 const newsController = require('./controllers/newsController');
 const messageController = require('./controllers/messageController');
@@ -21,13 +22,26 @@ app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 
-io.on("connection",function(socket){
+io.on("connection",socket => {
   console.log("socket connected")
-})
 
-io.sockets.on('connection',function(socket){
-  socket.emit('news',{ key: 'value'})
-})
+  socket.on('disconnect',reason => {
+    console.log('user disconnected')
+  })
+
+  //socket.on('fire')
+
+  //socket.on('earth')
+
+  //socket.on('water')
+
+  //socket.on('air')
+});
+
+// io.on('connection',socket => {
+  
+//   // socket.emit('news',{ key: 'value'})
+// })
 
 //'/main' route redirect
 app.get('/main', (req, res) => {

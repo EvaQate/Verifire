@@ -10,12 +10,18 @@
     
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <form action="">
+            <input type="text" />
+            <button>Send</button>
+        </form>
+    </div>
+
     <script type="text/javascript" src="./build/bundle.js"></script>
-<script src="socket.io/socket.io.js"> </script>
-<script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
     // initiate socket.io connection
-    const socket = io();
-</script>
+        const socket = io();
+    </script>
 </body>
 </html>
