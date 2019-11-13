@@ -1,10 +1,17 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser=require('body-parser')
+
+const http = require("http").createServer(app);
+const io=require('socket.io')(http)
+//new Server() is the same
+
 const PORT = 3000;
 
 const newsController = require('./controllers/newsController');
 const messageController = require('./controllers/messageController');
+// const userController=require('./controllers/userController')
 
 app.use(express.json());
 app.use(express.static('assets'))
@@ -13,6 +20,14 @@ app.use(express.static('assets'))
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
+
+io.on("connection",function(socket){
+  console.log("socket connected")
+})
+
+io.sockets.on('connection',function(socket){
+  socket.emit('news',{ key: 'value'})
+})
 
 //'/main' route redirect
 app.get('/main', (req, res) => {
@@ -65,6 +80,9 @@ app.use((err, req, res, next) => {
     res.sendStatus(500);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server listening on port: ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server listening on port: ${PORT}`);
+// });
+
+
+io.listen(PORT, () => console.log(`listening on port: ${PORT}`));
