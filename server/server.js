@@ -1,11 +1,25 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const PORT = 3000;
+const bodyParser=require('body-parser')
 
+const http = require("http").createServer(app);
+//new Server() is the same
+
+
+const PORT = 3000;
+const io=require('socket.io').listen(PORT)
+
+
+connections=[]
 const newsController = require('./controllers/newsController');
 const messageController = require('./controllers/messageController');
+
 require('events').EventEmitter.prototype._maxListeners = 100;
+
+// const userController=require('./controllers/userController')
+
+
 app.use(express.json());
 app.use(express.static('assets'))
 
@@ -13,6 +27,93 @@ app.use(express.static('assets'))
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
+// everytime a user loads the website --> gives them their own socket 
+io.on("connection",socket => {
+  console.log("socket connected"+socket.id)
+
+
+    connections.push(socket)
+    console.log(connections.length+"connections.length in serverjs line 32")
+
+    connecions.splice(connections.indexOf(socket))
+
+  socket.on('disconnect',reason => {
+    console.log('user disconnected')
+    if(!socket.username) return
+    users.splice(users.indexOf(socket.username),1)
+    updateUsernames()
+    connections.splice(connections.indexOf(socket),1)
+    
+  })
+
+
+  socket.on('connection', socket => {
+    socket.set('name',name,() => {
+      socket.emit('ready')
+    })
+  })
+
+  //access message data from client to socket and record which client was typing
+  socket.on('msg',() =>{
+    socket.get('name', (err,name)=>{
+      console.log('Message written by ',name)
+    })
+  })
+
+  socket.on('send message', data => {
+    io.sockets.emit('new message',{msg: data, user: sockets.username})
+  })
+
+
+  socket.on('connection',socket => {
+    console.log('made socket connection',socket.id)
+    socket.on('chat', data=>{
+      io.sockets.emit('chat',data)
+    })
+
+    let tweets=setInterval(()=>{
+      getBieberTweet((tweet) =>
+      socket.volatile.emit('bieber tweet',tweet))
+     },100);
+  })
+  socket.on('new user', function(data, callback){
+    callback(true)
+    socket.username=data
+    users.push(socket.username)
+    updateUsernames()
+    
+  })
+
+
+
+  //this allows for client side instant, when another user is typing it will display "Person L is typing"
+  socket.on('typing', data=> {
+      socket.broadcast.emit('typing',data)
+  })
+
+  function updateUsernames(){
+    io.sockets.emit('get users', user)
+   }
+
+
+  
+
+  //socket.on('fire')
+
+  //socket.on('earth')
+
+  //socket.on('water')
+
+  //socket.on('air')
+});
+
+
+
+
+// io.on('connection',socket => {
+  
+//   // socket.emit('news',{ key: 'value'})
+// })
 
 //'/main' route redirect
 app.get('/main', (req, res) => {
@@ -75,6 +176,9 @@ app.use((err, req, res, next) => {
     res.sendStatus(500);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server listening on port: ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server listening on port: ${PORT}`);
+// });
+
+
+io.listen(process.env.PORT || 3000, () => console.log(`listening on port: ${PORT}`));
