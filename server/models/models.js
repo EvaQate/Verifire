@@ -17,5 +17,11 @@ const messageSchema = new Schema({
     message: String
 })
 
+const userSchema = new Schema({
+    email: String,
+    password: String
+})
 const Message = mongoose.model('message', messageSchema);
+const User = mongoose.model('user', userSchema);
 module.exports = Message;
+module.exports = User;
