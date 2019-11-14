@@ -20,7 +20,7 @@ const messageController = require('./controllers/messageController');
 app.use(express.json());
 app.use(express.static('assets'))
 
-
+/////
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
