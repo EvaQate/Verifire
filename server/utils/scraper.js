@@ -43,7 +43,7 @@ const scrapeLAFDAlerts = async () => {
 }
 
 //scraping LA Times headlines and links
-const scrapeLATimes = async () => {
+const scrapeearthLATimes = async () => {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto('https://www.latimes.com/search?q=fire&f0=00000163-01e2-d9e5-adef-33e2984a0000&f0=0000016a-b70e-dd5c-abfe-bf3f7b290000&f0=00000168-8692-d5d8-a76d-efdb7d3c0000&f1=0000016a-ea2d-db5d-a57f-fb2dc8680000&s=0')
@@ -64,12 +64,137 @@ const scrapeLATimes = async () => {
     await browser.close()
     return scrapedData
 }
+const scrapefireLATimes = async () => {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto('https://www.latimes.com/search?q=fire&f0=00000163-01e2-d9e5-adef-33e2984a0000&f0=0000016a-b70e-dd5c-abfe-bf3f7b290000&f0=00000168-8692-d5d8-a76d-efdb7d3c0000&f1=0000016a-ea2d-db5d-a57f-fb2dc8680000&s=0')
 
+    const scrapedData = await page.evaluate(() => {
+        const scrapedMedia = Array.from(document.querySelectorAll('.PromoMedium-wrapper'));
+        let fullArr = [];
+        for(let i = 0; i < scrapedMedia.length; i++){
+            fullArr[i] = {
+                title: scrapedMedia[i].querySelector('.PromoMedium-title a:first-child').textContent,
+                link: scrapedMedia[i].querySelector('.PromoMedium-title a:first-child').getAttribute('href'),
+                picture: scrapedMedia[i].querySelector('.PromoMedium-media img').getAttribute('src'),
+            }
+        }
+        return fullArr
+    })
+
+    await browser.close()
+    return scrapedData
+}
+const scrapewaterLATimes = async () => {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto('https://www.latimes.com/search?q=flood&f0=00000163-01e2-d9e5-adef-33e2984a0000&f0=00000168-8692-d5d8-a76d-efdb7d3c0000&f0=0000016a-b70e-dd5c-abfe-bf3f7b290000&f1=0000016a-ea2d-db5d-a57f-fb2dc8680000&s=0')
+
+    const scrapedData = await page.evaluate(() => {
+        const scrapedMedia = Array.from(document.querySelectorAll('.PromoMedium-wrapper'));
+        let fullArr = [];
+        for(let i = 0; i < scrapedMedia.length; i++){
+            fullArr[i] = {
+                title: scrapedMedia[i].querySelector('.PromoMedium-title a:first-child').textContent,
+                link: scrapedMedia[i].querySelector('.PromoMedium-title a:first-child').getAttribute('href'),
+                picture: scrapedMedia[i].querySelector('.PromoMedium-media img').getAttribute('src'),
+            }
+        }
+        return fullArr
+    })
+
+    await browser.close()
+    return scrapedData
+}
+const scrapewindLATimes = async () => {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto('https://www.latimes.com/search?q=tornado&f0=00000163-01e2-d9e5-adef-33e2984a0000&f0=00000168-8692-d5d8-a76d-efdb7d3c0000&f1=0000016a-ea2d-db5d-a57f-fb2dc8680000&s=0')
+
+    const scrapedData = await page.evaluate(() => {
+        const scrapedMedia = Array.from(document.querySelectorAll('.PromoMedium-wrapper'));
+        let fullArr = [];
+        for(let i = 0; i < scrapedMedia.length; i++){
+            fullArr[i] = {
+                title: scrapedMedia[i].querySelector('.PromoMedium-title a:first-child').textContent,
+                link: scrapedMedia[i].querySelector('.PromoMedium-title a:first-child').getAttribute('href'),
+                picture: scrapedMedia[i].querySelector('.PromoMedium-media img').getAttribute('src'),
+            }
+        }
+        return fullArr
+    })
+
+    await browser.close()
+    return scrapedData
+}
 //scraping Youtube titles and links
-const scrapeYoutube = async () => {
+const scrapefireYoutube = async () => {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto( 'https://www.youtube.com/results?search_query=los+angeles+fires' )
+
+    const scrapedData = await page.evaluate(() => {
+        const scrapedMedia = Array.from(document.querySelectorAll('ytd-video-renderer.ytd-item-section-renderer'));
+        let fullArr = [];
+        for(let i = 0; i < scrapedMedia.length; i++){
+            fullArr[i] = {
+                title: scrapedMedia[i].querySelector('.ytd-video-renderer #video-title').getAttribute('title'),
+                link: `https://www.youtube.com${scrapedMedia[i].querySelector('.ytd-video-renderer #video-title').getAttribute('href')}`,
+                picture: scrapedMedia[i].querySelector('#img').getAttribute('src')
+            }
+        }
+        return fullArr
+    })
+  
+    await browser.close()
+    return scrapedData
+}
+const scrapewaterYoutube = async () => {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto( 'https://www.youtube.com/results?search_query=los+angeles' )
+
+    const scrapedData = await page.evaluate(() => {
+        const scrapedMedia = Array.from(document.querySelectorAll('ytd-video-renderer.ytd-item-section-renderer'));
+        let fullArr = [];
+        for(let i = 0; i < scrapedMedia.length; i++){
+            fullArr[i] = {
+                title: scrapedMedia[i].querySelector('.ytd-video-renderer #video-title').getAttribute('title'),
+                link: `https://www.youtube.com${scrapedMedia[i].querySelector('.ytd-video-renderer #video-title').getAttribute('href')}`,
+                picture: scrapedMedia[i].querySelector('#img').getAttribute('src')
+            }
+        }
+        return fullArr
+    })
+  
+    await browser.close()
+    return scrapedData
+}
+const scrapeearthYoutube = async () => {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto( 'https://www.youtube.com/results?search_query=los+angeles+earthquakes' )
+
+    const scrapedData = await page.evaluate(() => {
+        const scrapedMedia = Array.from(document.querySelectorAll('ytd-video-renderer.ytd-item-section-renderer'));
+        let fullArr = [];
+        for(let i = 0; i < scrapedMedia.length; i++){
+            fullArr[i] = {
+                title: scrapedMedia[i].querySelector('.ytd-video-renderer #video-title').getAttribute('title'),
+                link: `https://www.youtube.com${scrapedMedia[i].querySelector('.ytd-video-renderer #video-title').getAttribute('href')}`,
+                picture: scrapedMedia[i].querySelector('#img').getAttribute('src')
+            }
+        }
+        return fullArr
+    })
+  
+    await browser.close()
+    return scrapedData
+}
+const scrapewindYoutube = async () => {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto( 'https://www.youtube.com/results?search_query=los+angeles+tornados' )
 
     const scrapedData = await page.evaluate(() => {
         const scrapedMedia = Array.from(document.querySelectorAll('ytd-video-renderer.ytd-item-section-renderer'));
@@ -91,5 +216,14 @@ const scrapeYoutube = async () => {
 
 module.exports.scrapeLAFD = scrapeLAFD
 module.exports.scrapeLAFDAlerts = scrapeLAFDAlerts
-module.exports.scrapeLATimes = scrapeLATimes
-module.exports.scrapeYoutube = scrapeYoutube
+
+
+module.exports.scrapeearthYoutube = scrapeearthYoutube
+module.exports.scrapewaterYoutube = scrapewaterYoutube
+module.exports.scrapefireYoutube = scrapefireYoutube
+module.exports.scrapewindYoutube = scrapewindYoutube
+
+module.exports.scrapefireLATimes= scrapefireLATimes
+module.exports.scrapewaterLATimes= scrapewaterLATimes
+module.exports.scrapeearthLATimes= scrapeearthLATimes
+module.exports.scrapewindLATimes= scrapewindLATimes

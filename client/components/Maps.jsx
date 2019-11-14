@@ -3,7 +3,7 @@ import React from 'react';
 //This componenet was build for the purpose of displaying a map that displays local disasters
 //We started with displaying fires
 
-const Maps = (props) => {
+const Maps = ({element}) => {
     const aeris = new AerisWeather('wgE96YE3scTQLKjnqiMsv', 'iSUGNlzI2maa6Whv4trM8lXvmuHE4w2QAz3XyQrC');
 
     aeris.views().then(views => {

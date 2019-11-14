@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ContentContainer from './ContentContainer.jsx';
 import LandingContainer from './LandingContainer.jsx';
-
+import SignupContainer from './SignupContainer.jsx';
 //we utilized react-bootstrap to style our page with pre-made components
 import Navbar from 'react-bootstrap/Navbar'
+import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 //we imported the next set to utilize react-router as we wanted to route in a landing page
 import {
@@ -23,19 +24,48 @@ import {
 
 const MainContainer = () => {
   //instantiating hook in this component so that the fetch occurs earlier
-  const [news, newsUpdate] = useState([[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}]]);
-  
+  const [firenews, firenewsUpdate] = useState([[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}]]);
+  const [earthnews, earthnewsUpdate] = useState([[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}]]);
+  // const [windnews, windnewsUpdate] = useState([[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}]]);
+  // const [waternews, waternewsUpdate] = useState([[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}],[{title:'Loading...', link:'#'}]]);
   // upon rendering, the fetch will occur and the hook 'newsUpdate' should update the state
   useEffect(() => {
-    fetch('/news')
+    fetch('/firenews')
     .then(resp => {
         return resp.json()})
     .then(data => {
-        newsUpdate([...data])
+        firenewsUpdate([...data])
     })
     .catch((err) => {
         console.log(err)
     })
+    // fetch('/windnews')
+    // .then(resp => {
+    //     return resp.json()})
+    // .then(data => {
+    //     windnewsUpdate([...data])
+    // })
+    // .catch((err) => {
+    //     console.log(err)
+    // })
+    fetch('/earthnews')
+    .then(resp => {
+        return resp.json()})
+    .then(data => {
+        earthnewsUpdate([...data])
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+    // fetch('/waternews')
+    // .then(resp => {
+    //     return resp.json()})
+    // .then(data => {
+    //     waternewsUpdate([...data])
+    // })
+    // .catch((err) => {
+    //     console.log(err)
+    // })
 },[])
     //easter egg for sandstorm- just need to click the fire icon
     const Easteregg = () => {
@@ -63,8 +93,8 @@ const MainContainer = () => {
 
     return ( 
         <article id ="mainContainer">
-            <Router>
-             <Navbar bg="dark" variant="dark">
+          <Router>
+              <Navbar bg="dark" variant="dark">
                 <Navbar.Brand>
                 <img
                     alt=""
@@ -75,18 +105,39 @@ const MainContainer = () => {
                     onClick={()=> Easteregg()}
                 />
                 <Link className="navLinks" to="/">Verifire</Link>
+                
                 </Navbar.Brand>
-                <NavLink className="navLinks" to="/main">Content</NavLink>
-            </Navbar>
+                
+                <NavLink className="navLinks" to="/earth"> Earth </NavLink>
+                {/* <NavLink className="navLinks" to="/wind"> Wind </NavLink> */}
+                <NavLink className="navLinks" to="/fire"> Fire </NavLink>
+                {/* <NavLink className="navLinks" to="/water"> Water </NavLink> */}
+                
+                <NavLink className="navLinks" to="/sign-up">Sign Up/Log In</NavLink>
+
+              </Navbar>
+              
             <Switch>
-          <Route path="/main">
-            <ContentContainer news={news}/>
-          </Route>
-          <Route path="/">
-            <LandingContainer/>
-          </Route>
-          </Switch>
-        </Router>
+              <Route path="/earth">
+                <ContentContainer element ={'earth'} news={earthnews}/>
+              </Route>
+              <Route path="/wind">
+                {/* <ContentContainer element ={'wind'} news={windnews}/> */}
+              </Route>
+              <Route path="/fire">
+                <ContentContainer element ={'fire'} news={firenews}/>
+              </Route>
+              <Route path="/water">
+                {/* <ContentContainer element ={'water'} news={waternews}/> */}
+              </Route>
+              <Route exact={true} path="/">
+                <LandingContainer/>
+              </Route>
+              <Route path="/sign-up">
+                <SignupContainer/>
+              </Route>
+            </Switch>
+          </Router>
         </article>
      );
 }

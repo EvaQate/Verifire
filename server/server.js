@@ -5,7 +5,7 @@ const PORT = 3000;
 
 const newsController = require('./controllers/newsController');
 const messageController = require('./controllers/messageController');
-
+require('events').EventEmitter.prototype._maxListeners = 100;
 app.use(express.json());
 app.use(express.static('assets'))
 
@@ -32,9 +32,19 @@ app.get('/flare', (req, res) => {
     //     [ { title: 'Youtube Title', link: 'youtube.com', picture: 'piclink.com' } ]
     // ]
 
-app.get('/news', newsController.getNews, (req, res) => {
-  res.status(200).json(res.locals.allNews);
+app.get('/firenews', newsController.getfireNews, (req, res) => {
+  res.status(200).json(res.locals.allfireNews);
 });
+app.get('/waternews', newsController.getwaterNews, (req, res) => {
+  res.status(200).json(res.locals.allwaterNews);
+});
+app.get('/earthnews', newsController.getearthNews, (req, res) => {
+  res.status(200).json(res.locals.allearthNews);
+});
+app.get('/windnews', newsController.getwindNews, (req, res) => {
+  res.status(200).json(res.locals.allwindNews);
+});
+
 // '/alerts' route will respond with an array of alerts from LAFD: {title: 'Alert', link: 'www.alertLink.com'}
 app.get('/alerts', newsController.getAlerts, (req, res) => {
   res.json(res.locals.alerts);
