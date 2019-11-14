@@ -7,8 +7,6 @@ import './assets/styles.scss'
 import MainContainer from "./containers/MainContainer.jsx";
 
 
-const io=require('socket.io-client')
-const socket = io('ws://localhost:3000', {transports: ['websocket']})
 // const socket=io('http://localhost:3000')
 //We used functional components throughout the application so we could utilize hooks
     //functional components don't require you to make constructors
@@ -18,13 +16,20 @@ const socket = io('ws://localhost:3000', {transports: ['websocket']})
 //We didn't instantiate state at the parent level because none of the state we use relates to other components
 
 const App = () => { 
-    useEffect(() => {
-        socket.on('message', msg => {
-            console.log('we got a message', msg);
-        })
-    // socket.broadcast.emit('user connected')
+    // useEffect(() => {
 
-    },[])
+    // // socket.broadcast.emit('user connected')
+
+    // },[])
+
+    // useEffect(()=>){
+    
+    // },[...])
+
+   
+    // var useWebSocketsOnOpen = (ws) => {
+    //     const [state,setState] = react.useState(null)
+    // }
 
     // const [theme,setTheme]=useState('fire');
     //toggle states: 'fire', 'earth', 'air'(tornado), drought, 'water' 

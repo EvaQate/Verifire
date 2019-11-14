@@ -7,7 +7,7 @@ const http = require("http").createServer(app);
 //new Server() is the same
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const io=require('socket.io')(http);
 
 
@@ -61,17 +61,45 @@ app.get('/', (req, res) => {
 //     })
 //   })
 
-//   socket.on('send message', data => {
-//     io.sockets.emit('new message',{msg: data, user: sockets.username})
-//   })
-
-
+  // socket.on('send message', data => {
+  //   io.sockets.emit('new message',{msg: data, user: sockets.username})
+  // })
+const users={}
+let numUsers=0
   io.on('connection',socket => {
     console.log('made socket connection')
-    socket.on('chat', data => {
-      // io.sockets.emit('chat',data)
-      socket.emit('ready')
+    // socket.on('result', result => {
+    //    socket.broadcast.emit('chat',{ message: message ,name: socket.username
+    //    })
+    // })
+
+    // socket.on('new user', name => {
+    //   console.log("new user about to join")
+    //   users[socket.id] =name
+    //   socket.username=name
+    //   ++numUsers
+    //   socket.emit('user-connected',{ username :socket.username, numUsers:numUsers
+    //   })
+      
+    // })
+
+    socket.on('message', message =>{
+      console.log('server socket message: ', message)
+      socket.emit('result',message)
     })
+    // socket.on('typing',() =>{
+    //   console.log("typing")
+    //   socket.broadcase.emit('typing',{
+    //     username: socket.username
+    //   })
+    // })
+
+    socket.on('disconnect',() => {
+      console.log("disconnect about to delete socket")
+      socket.broadcast.emit('user-disconnected',users[socket.id])
+      delete users[socket.id]
+    })
+
 
   //   let tweets=setInterval(()=>{
   //     getBieberTweet((tweet) =>
@@ -83,7 +111,7 @@ app.get('/', (req, res) => {
   //   socket.username=data
   //   users.push(socket.username)
   //   updateUsernames()
-    
+  
  })
 
 
