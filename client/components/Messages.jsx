@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 
 // const io = require('socket.io-client');
 
 // const socket = io('ws://localhost:3000', {transports: ['websocket']});
-// const socket = io('localhost:3000');
+
 
 
 //Note the <React.Fragment> it's utilized instead of a <div>
@@ -16,7 +16,74 @@ import io from 'socket.io-client'
 
 const Messages = (props) => {
 
+    // const[messagecount,setMessageCount] = useState(0)
+    const [messages,setMessages]=useState([])
+    const [input, setInput]= useState('')
 
+    const displayMessage = messages.map((message, i) => {
+        console.log("displaymessages")
+        return <p key={i}>{messages}</p>
+    })
+    // useEffect(() => {
+    //     //this is used to fetch the message from the database
+    //     fetch('/messages')
+    //     .then(resp => {
+    //         return resp.json()
+    //     })
+    //     .then(data => {
+    //         setMessages([...data])
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     })
+    // }, [])
+    // const [theme,setTheme]=useState('fire')
+    // useEffect(() =>{
+    //     socket.on('receive message',payload => {
+    //         setMessageCount(messageCount++)
+    //     })
+    // })
+
+    const handleType = e => {
+        setInput(e.target.value)
+    };
+
+    const handleClick = () => {
+        console.log('emitting new message', input)
+        socket.emit('chat',{
+            message: message.value
+        })
+        // setMessages(messages.concat([{'message': input}]))
+        //  setInput('');
+        // setMessageCount(messageCount++)
+    }
+    // useEffect(() =>{
+    //     console.log('received new message')
+    //     document.title=`${messageCount} new messages have been emitted `
+    // },[messageCount])
+   
+useEffect(()=> {
+    socket.on('chat',(data) => {
+
+        console.log(data.message+'in useEffect')
+        setMessages([data.message].concat(messages))
+        console.log('msgs',messages)
+    })
+
+},[setMessages])
+
+    // const handleSetTheme = () => {
+    //     let newTheme
+    //     (theme=='fire')
+    //     ? newTheme = 'fire'
+    //     : newTheme = 'air'
+
+
+    //     console.log('new theme '+ newTheme)
+    //     setTheme(newTheme)
+    // }
+
+    
     // // this.socket = socketIOClient('ws://localhost:8989', {
     // //     query : 'username='+this.state.username+'&uid='+this.state.uid
     // // });
@@ -33,10 +100,6 @@ const Messages = (props) => {
     // // const [socket, setSocket]=useState(null)
     // //this hook was built to take in user input and utilize it to show messages sent
     // const [input, setInput]= useState('')
-
-    // const displayMessage = messages.map((el, i) => {
-    //     return <p key={i}>{el.message}</p>
-    // })
 
     
 
@@ -84,14 +147,14 @@ const Messages = (props) => {
     //     console.log(result)
     // })
 
-    // return ( 
-    //     <React.Fragment>
-    //         {displayMessage}
-    //         <input type="text" placeholder="Enter message here" value={input} onChange={handleType}/>
-    //         <input type="button" value="press to send" onClick={handleClick}/>
-    //     </React.Fragment>
+    return ( 
+        <React.Fragment><div id="input-field">
+             {displayMessage}
+               <input id="message" type="text" placeholder="Enter message here" value={input} onChange={handleType}/>
+               <input id="send" type="button" value="press to send" onClick={handleClick} />
+               </div> </React.Fragment>
         
-    //  );
+     );
 }
  
 export default Messages;

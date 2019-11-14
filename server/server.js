@@ -7,11 +7,12 @@ const http = require("http").createServer(app);
 //new Server() is the same
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 const io=require('socket.io')(http);
+//we must get server socket io, there are so many different types: http,, client, node, etc
 
 
-connections=[]
+// connections=[]
 const newsController = require('./controllers/newsController');
 const messageController = require('./controllers/messageController');
 // const userController=require('./controllers/userController')
@@ -24,8 +25,8 @@ app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 // everytime a user loads the website --> gives them their own socket 
-// io.on("connection",socket => {
-//   console.log("socket connected"+socket.id)
+io.on("connection",socket => {
+  console.log("socket connected"+socket.id)
 
 //     socket.on('subscribeToTime', (interval) => {
 
@@ -38,21 +39,22 @@ app.get('/', (req, res) => {
 
 //     connecions.splice(connections.indexOf(socket))
 
-//   socket.on('disconnect',reason => {
-//     console.log('user disconnected')
-//     if(!socket.username) return
-//     users.splice(users.indexOf(socket.username),1)
-//     updateUsernames()
-//     connections.splice(connections.indexOf(socket),1)
+ 
+
+
+  socket.on('chat', (data) => {
+    console.log('msg data recieved by server', data)
+    io.sockets.emit('chat',data)
+  })
+
+  // socket.on('disconnect',() => {
+  //   console.log('user disconnected in server')
+  //   // if(!socket.username) return
+  //   // users.splice(users.indexOf(socket.username),1)
+  //   // updateUsernames()
+  //   // connections.splice(connections.indexOf(socket),1)
     
-//   })
-
-
-//   socket.on('connection', socket => {
-//     socket.set('name',name,() => {
-//       socket.emit('ready')
-//     })
-//   })
+  // })
 
 //   //access message data from client to socket and record which client was typing
 //   socket.on('msg',() =>{
@@ -63,15 +65,12 @@ app.get('/', (req, res) => {
 
   // socket.on('send message', data => {
   //   io.sockets.emit('new message',{msg: data, user: sockets.username})
-  // })
-const users={}
-let numUsers=0
-  io.on('connection',socket => {
-    console.log('made socket connection')
-    // socket.on('result', result => {
-    //    socket.broadcast.emit('chat',{ message: message ,name: socket.username
-    //    })
-    // })
+  })
+// const users={}
+// let numUsers=0
+  // io.on('connection',socket => {
+  //   console.log('made socket connection')
+  
 
     // socket.on('new user', name => {
     //   console.log("new user about to join")
@@ -83,10 +82,20 @@ let numUsers=0
       
     // })
 
-    socket.on('message', message =>{
-      console.log('server socket message: ', message)
-      socket.emit('result',message)
-    })
+    // socket.on('new message', data =>{
+    //   console.log(data.room)
+    //   socket.broadcast
+    //   .to(data.room)
+    //   .emit('recieve message',data)
+    // })
+
+      // socket.on('room', data => {
+      //   console.log('room join')
+      //   console.log(data)
+      //   socket.join(data.room)
+      // //  socket.broadcast.emit('chat',{ message: message ,name: socket.username
+      //  })
+    
     // socket.on('typing',() =>{
     //   console.log("typing")
     //   socket.broadcase.emit('typing',{
@@ -94,11 +103,11 @@ let numUsers=0
     //   })
     // })
 
-    socket.on('disconnect',() => {
-      console.log("disconnect about to delete socket")
-      socket.broadcast.emit('user-disconnected',users[socket.id])
-      delete users[socket.id]
-    })
+    // socket.on('disconnect',() => {
+    //   console.log("disconnect about to delete socket")
+    //   // socket.broadcast.emit('user-disconnected',users[socket.id])
+    //   // delete users[socket.id]
+    // })
 
 
   //   let tweets=setInterval(()=>{
@@ -112,7 +121,13 @@ let numUsers=0
   //   users.push(socket.username)
   //   updateUsernames()
   
- })
+  // socket.on('leave room',data => {
+  //   console.log('leaving room')
+  //   socket.broadcast
+  //   .to(data.room)
+  //   .emit('recieve message',data)
+  // })
+ 
 
 
 
@@ -207,4 +222,4 @@ app.use((err, req, res, next) => {
 // });
 
 
-http.listen(process.env.PORT || 3000, () => console.log(`listening on port: ${PORT}`));
+http.listen(PORT, () => console.log(`listening on port: ${PORT}`));

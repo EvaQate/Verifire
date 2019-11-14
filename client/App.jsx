@@ -1,11 +1,12 @@
-import React, { useEffect } from  "react";
+import React, { useState, useEffect } from  "react";
 
 //react-bootstrap has pre-made css files that tidy up a little from default
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles.scss'
 
 import MainContainer from "./containers/MainContainer.jsx";
-
+// const io=require('socket-io.client')
+// const socket=io('ws://localhost:3000')
 
 // const socket=io('http://localhost:3000')
 //We used functional components throughout the application so we could utilize hooks
@@ -21,10 +22,36 @@ const App = () => {
     // // socket.broadcast.emit('user connected')
 
     // },[])
+// const[message,setMessage]=useState('EvaQueue: toggle for zero day type')
+// const[mesageCount, setMessageCount] = useState(0)
+// const [theme,setTheme]=useState('fire')
+// const[onFire,setOnFire]=useState('false')
+// ///fire, earth, air water
 
-    // useEffect(()=>){
+// useEffect(() =>{
+//     if(onFire){ console.log('about to join room')
+//     socket.emit('room',{message:'shadow-ban'})
+//     }
     
-    // },[...])
+//     return () => {
+//         if(onFire){ console.log('shadowbanning...')
+//         socket.emit('relevant info only',{
+//             message: 'shadow-ban'
+//         })
+//     }
+//     }
+
+// })
+
+//add a set intettr to send socket emit messages to everyone a fae user, admin, buy our  merche
+
+    //  useEffect(()=>{
+    //     socket.on('receive message',payload => {
+    //         setMessageCount(messageCount++)
+    //     })
+    //     document.title`${messageCount} new message}`
+    // },[messageCount])
+
 
    
     // var useWebSocketsOnOpen = (ws) => {
@@ -32,6 +59,28 @@ const App = () => {
     // }
 
     // const [theme,setTheme]=useState('fire');
+    // const handleSetTheme = () => {
+    //     let newTheme
+    //     (theme==='fire')
+    //     ? newTheme='air'
+    //     : newTheme='fire'
+    //     console.log('new theme:' +newTheme)
+    //     setTheme(newTheme)
+    // }
+
+    // const handleOnFire = () => {
+    //     onFire
+    //     ? setOnFire(false)
+    //     : setOnFire(true)
+    // }
+
+    // const handleNewMessage = () => {
+    //     console.log('emitting new message')
+    //     socket.emit('new message',{
+    //         message:'new-message'
+    //     })
+    //     setMessageCount(messageCount++)
+    // }
     //toggle states: 'fire', 'earth', 'air'(tornado), drought, 'water' 
     //the containers will look exactly the same only different apis and data,
     //use css transition to make the screen rain
@@ -41,6 +90,7 @@ const App = () => {
     // })
     return (
         <MainContainer />
+    
     )
 }
 
