@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+// import io from 'socket.io-client'
+
+// const socket = io.connect("http://localhost:3000")
 
 //Note the <React.Fragment> it's utilized instead of a <div>
 // this allows for multiple items to be part of the render without the surrounding "holder" to be rendered in too
@@ -9,8 +12,21 @@ import React, { useEffect, useState } from 'react'
 
 const Messages = (props) => {
 
+
+    // this.socket = socketIOClient('ws://localhost:8989', {
+    //     query : 'username='+this.state.username+'&uid='+this.state.uid
+    // });
+
+    // this.socket.on('updateUsersList', function (users) {
+    //     console.log(users);
+    //     this.setState({
+    //         users : users
+    //     });
+
+ 
     //This hook was built to receive and show messages
     const [messages, setMessages]= useState([{message: 'message'}])
+//  const [socket, setSocket]=useState(null)
     //this hook was built to take in user input and utilize it to show messages sent
     const [input, setInput]= useState('')
 
@@ -38,6 +54,10 @@ const Messages = (props) => {
     const handleType = e => {
         setInput(e.target.value)
     };
+
+    // const handleMessageSubmit((msg) => {
+    //     socket.emit("chat message", )
+    // })
 
     const handleClick = () => {
         // fetch('/messages/create', {

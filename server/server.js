@@ -8,7 +8,7 @@ const http = require("http").createServer(app);
 
 
 const PORT = 3000;
-const io=require('socket.io').listen(PORT)
+const io=require('socket.io')(http);
 
 
 connections=[]
@@ -24,72 +24,84 @@ app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 // everytime a user loads the website --> gives them their own socket 
-io.on("connection",socket => {
-  console.log("socket connected"+socket.id)
+// io.on("connection",socket => {
+//   console.log("socket connected"+socket.id)
 
+//     socket.on('subscribeToTime', (interval) => {
 
-    connections.push(socket)
-    console.log(connections.length+"connections.length in serverjs line 32")
+//       setInterval(() => {
+//         socket.emit('timer', new Date())
+//       })
+//     })
+//     connections.push(socket)
+//     console.log(connections.length+"connections.length in serverjs line 32")
 
-    connecions.splice(connections.indexOf(socket))
+//     connecions.splice(connections.indexOf(socket))
 
-  socket.on('disconnect',reason => {
-    console.log('user disconnected')
-    if(!socket.username) return
-    users.splice(users.indexOf(socket.username),1)
-    updateUsernames()
-    connections.splice(connections.indexOf(socket),1)
+//   socket.on('disconnect',reason => {
+//     console.log('user disconnected')
+//     if(!socket.username) return
+//     users.splice(users.indexOf(socket.username),1)
+//     updateUsernames()
+//     connections.splice(connections.indexOf(socket),1)
     
-  })
+//   })
 
 
-  socket.on('connection', socket => {
-    socket.set('name',name,() => {
+//   socket.on('connection', socket => {
+//     socket.set('name',name,() => {
+//       socket.emit('ready')
+//     })
+//   })
+
+//   //access message data from client to socket and record which client was typing
+//   socket.on('msg',() =>{
+//     socket.get('name', (err,name)=>{
+//       console.log('Message written by ',name)
+//     })
+//   })
+
+//   socket.on('send message', data => {
+//     io.sockets.emit('new message',{msg: data, user: sockets.username})
+//   })
+
+
+  io.on('connection',socket => {
+    console.log('made socket connection')
+    socket.on('chat', data => {
+      // io.sockets.emit('chat',data)
       socket.emit('ready')
     })
-  })
 
-  //access message data from client to socket and record which client was typing
-  socket.on('msg',() =>{
-    socket.get('name', (err,name)=>{
-      console.log('Message written by ',name)
-    })
-  })
-
-  socket.on('send message', data => {
-    io.sockets.emit('new message',{msg: data, user: sockets.username})
-  })
-
-
-  socket.on('connection',socket => {
-    console.log('made socket connection',socket.id)
-    socket.on('chat', data=>{
-      io.sockets.emit('chat',data)
-    })
-
-    let tweets=setInterval(()=>{
-      getBieberTweet((tweet) =>
-      socket.volatile.emit('bieber tweet',tweet))
-     },100);
-  })
-  socket.on('new user', function(data, callback){
-    callback(true)
-    socket.username=data
-    users.push(socket.username)
-    updateUsernames()
+  //   let tweets=setInterval(()=>{
+  //     getBieberTweet((tweet) =>
+  //     socket.volatile.emit('bieber tweet',tweet))
+  //    },100);
+  // })
+  // socket.on('new user', function(data, callback){
+  //   callback(true)
+  //   socket.username=data
+  //   users.push(socket.username)
+  //   updateUsernames()
     
-  })
+ })
 
 
 
   //this allows for client side instant, when another user is typing it will display "Person L is typing"
-  socket.on('typing', data=> {
-      socket.broadcast.emit('typing',data)
-  })
+  // socket.on('typing', data=> {
+  //     socket.broadcast.emit('typing',data)
+  // })
 
-  function updateUsernames(){
-    io.sockets.emit('get users', user)
-   }
+
+  // socket.on('connection', socket =>{
+  //   socket.broadcast.emit('user connected')
+  //   socket.broadcase.json.send({ a: 'message' })
+  // })
+
+  // function updateUsernames(){
+  //   io.sockets.emit('get users', user)
+  //  }
 
 
   
@@ -101,7 +113,7 @@ io.on("connection",socket => {
   //socket.on('water')
 
   //socket.on('air')
-});
+// });
 
 
 
@@ -167,4 +179,4 @@ app.use((err, req, res, next) => {
 // });
 
 
-io.listen(process.env.PORT || 3000, () => console.log(`listening on port: ${PORT}`));
+http.listen(process.env.PORT || 3000, () => console.log(`listening on port: ${PORT}`));

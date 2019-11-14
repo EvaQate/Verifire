@@ -7,11 +7,10 @@ import styles from './assets/styles.scss';
 import { BrowserRouter } from "react-router-dom";
 //by using createRoot here we are onboarding concurrent mode in the experimental react version
 
-render(
-   ReactDOM.createRoot(
-      document.getElementById('root')
-    ).render(
+
+ 
+    render(
       <BrowserRouter>
-      <App />
-    </BrowserRouter>,)
-);
+      <App /></BrowserRouter> ,
+      document.getElementById('root')
+    )
