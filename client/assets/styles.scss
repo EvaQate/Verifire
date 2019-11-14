@@ -110,13 +110,22 @@ hr {
 
 .navLinks {
     color: white;
+    margin-right: 25px;
+    margin-left: 25px;
+
 }
 
 .navbar {
     box-shadow: black 0px 5px 10px;
 }
 
+#signup{
+    display:flex;
+    padding: 200px;
+ 
 
+
+}
 //landing page styles
 #landing {
     display:flex;
