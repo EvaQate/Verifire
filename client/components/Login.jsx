@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 
 import Axios from 'axios';
 import firebase from 'firebase';
-import styledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyBYxH0RxxaByhPzYaB7b4BfLb89jp_MDDE",
@@ -27,10 +29,11 @@ class Login extends React.Component {
       password: '',
       isSignedIn: false
     };
-    uiConfig = {
+    this.uiConfig = {
       signInFlow: 'popup',
       signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
       ],
       callbacks: {
         signInSuccess: () => false
@@ -42,9 +45,9 @@ class Login extends React.Component {
     this.signUpButton = this.signUpButton.bind(this);
   }
 
-  componentDidMount = () => {
-    firebase.auth().onAuthStateChanged(user => {
-      this.setState({isSignedIn: !!user})
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(prevState => {
+      this.setState({isSignedIn: !prevState})
     })
   }
 
@@ -95,6 +98,7 @@ class Login extends React.Component {
                   <MDBInput
                     onChange={this.onChangeInputPassword}
                     value = {this.state.password}
+                    type="password"
                     label="Type your password"
                   />
                 </div>
@@ -108,9 +112,9 @@ class Login extends React.Component {
         </MDBContainer>
         <div className="App">
           {this.state.isSignedIn ? ( 
-            <div>Signed In!</div>
+            <div>You are signed in!</div>
           ) : (
-            <styledFirebaseAuth
+            <StyledFirebaseAuth
               uiConfig={this.uiConfig}
               firebaseAuth={firebase.auth()}
             />
@@ -121,3 +125,5 @@ class Login extends React.Component {
     )
   }
 }
+
+export default Login
