@@ -24,9 +24,11 @@ app.use(express.static('assets'))
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
+const users={}
+let numUsers=0
 // everytime a user loads the website --> gives them their own socket 
-io.on("connection",socket => {
-  console.log("socket connected"+socket.id)
+io.on('connection',socket => {
+  console.log('socket connected'+socket.id)
 
 //     socket.on('subscribeToTime', (interval) => {
 
@@ -44,7 +46,7 @@ io.on("connection",socket => {
 
   socket.on('chat', (data) => {
     console.log('msg data recieved by server', data)
-    io.sockets.emit('chat',data)
+    io.sockets.emit('chat', data)
   })
 
   // socket.on('disconnect',() => {
@@ -63,22 +65,26 @@ io.on("connection",socket => {
 //     })
 //   })
 
+
+   socket.on('typing',data =>{
+      console.log('typing in server')
+      socket.broadcast.emit('typing',data)
+    })
+
+
   // socket.on('send message', data => {
   //   io.sockets.emit('new message',{msg: data, user: sockets.username})
   })
-// const users={}
-// let numUsers=0
+
   // io.on('connection',socket => {
   //   console.log('made socket connection')
   
 
-    // socket.on('new user', name => {
+    // socket.on('add user', (username) => {
     //   console.log("new user about to join")
-    //   users[socket.id] =name
-    //   socket.username=name
+    //   users[socket.id] =username
+    //   // socket.username=username
     //   ++numUsers
-    //   socket.emit('user-connected',{ username :socket.username, numUsers:numUsers
-    //   })
       
     // })
 
@@ -96,19 +102,22 @@ io.on("connection",socket => {
       // //  socket.broadcast.emit('chat',{ message: message ,name: socket.username
       //  })
     
-    // socket.on('typing',() =>{
-    //   console.log("typing")
-    //   socket.broadcase.emit('typing',{
-    //     username: socket.username
-    //   })
-    // })
+ 
 
     // socket.on('disconnect',() => {
     //   console.log("disconnect about to delete socket")
     //   // socket.broadcast.emit('user-disconnected',users[socket.id])
     //   // delete users[socket.id]
     // })
-
+    // socket.on('typing', ()=> {
+    //   if (!socket.authenticated) {
+    //    return;
+    //   }
+    
+    //   socket.broadcast.emit('typing', {
+    //    username: socket.username,
+    //   })
+    //  })
 
   //   let tweets=setInterval(()=>{
   //     getBieberTweet((tweet) =>

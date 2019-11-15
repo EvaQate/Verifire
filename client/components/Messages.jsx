@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 // import io from 'socket.io-client'
+// import useWebSocket from 'react-use-websocket';
 
 // const io = require('socket.io-client');
 
@@ -20,6 +21,14 @@ const Messages = (props) => {
     const [messages,setMessages]=useState([])
     const [input, setInput]= useState('')
 
+
+    // const[id,setId]=useState['']
+    // const[chatRoom,setChatRoom]=useState['']
+
+    const[userName,setUserName]=useState('')
+    const[isTyping,setIsTyping]=useState(false)
+    const [users,setUsers]=useState({})
+    const[numUsers,setNumUsers]=useState(0)
     const displayMessage = messages.map((message, i) => {
         console.log("displaymessages")
         return <p key={i}>{messages}</p>
@@ -46,6 +55,8 @@ const Messages = (props) => {
 
     const handleType = e => {
         setInput(e.target.value)
+
+        socket.emit('typing','user')
     };
 
     const handleClick = () => {
@@ -63,14 +74,55 @@ const Messages = (props) => {
     // },[messageCount])
    
 useEffect(()=> {
+    console.log('socket', socket);
     socket.on('chat',(data) => {
 
         console.log(data.message+'in useEffect')
         setMessages([data.message].concat(messages))
         console.log('msgs',messages)
+        setInput['']
     })
+},[])
 
-},[setMessages])
+
+useEffect(() =>{
+
+    // while(input!=''){
+    //     socket.emit('isTyping','is typing')
+
+    // // }
+    // socket.on('typing',(data) => {
+    //     isTyping=true
+    //     data.message='is typing'
+    // })
+ 
+    socket.on('typing', (input) =>{
+        console.log('typing in messages..')
+        if (input) {
+            // socket.emit('typing',)
+            // let append1=document.createElement('div')
+            // append1.id='typing'
+            // append1.innerHTML('<p><em> user is typing...</em></p>')
+            // document.getElementById('messages').append(append1)
+            setIsTyping(input);
+        //   document.createElement('div').innerHTML = '<p><em>' + <input type="button" value=""/> + ' user is typing...</em></p>';
+        } else {
+            setIsTyping(false);
+        }
+    
+    })
+},[])
+
+
+// useEffect(() => {
+//     socket.on('add user', (username) => {
+//         socket.username=username;
+//         socket.emit('add user',username)
+//     })
+// },[])
+
+
+
 
     // const handleSetTheme = () => {
     //     let newTheme
@@ -146,12 +198,16 @@ useEffect(()=> {
     //     // [messages,setMessages]=setState({result})
     //     console.log(result)
     // })
-
+    let typingUser;
+    if(isTyping){
+        typingUser = <p>'User typing..'</p>;
+    }
     return ( 
         <React.Fragment><div id="input-field">
              {displayMessage}
                <input id="message" type="text" placeholder="Enter message here" value={input} onChange={handleType}/>
                <input id="send" type="button" value="press to send" onClick={handleClick} />
+               {typingUser}
                </div> </React.Fragment>
         
      );

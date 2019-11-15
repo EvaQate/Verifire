@@ -12,7 +12,7 @@ const LandingContainer = (props) => {
         <div id="landing">
             <div id="landingInfo">
 
-                <h2>Verifire:</h2>
+                <h2>EvaQate</h2>
                 <span>Keep Up With The Heat</span>
                 <p>Stay updated, know your coverage, and keep connected</p>
             </div>
@@ -92,7 +92,7 @@ const LandingContainer = (props) => {
                     }
                 }} />
                 </div>
-                <p id="company">by aBANTia</p>
+                {/* <p id="company">by aBANTia</p> */}
         </div>
      );
 }
