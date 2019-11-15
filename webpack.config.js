@@ -34,6 +34,7 @@ module.exports = {
             '/': 'http://localhost:3000',
             '/news': 'http://localhost:3000/news',
             '/messages': 'http://localhost:3000/messages'
-        }   
+        },
+        historyApiFallback: true,   
     }
 }

@@ -1,22 +1,17 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const bodyParser=require('body-parser')
-
-const http = require("http").createServer(app);
-//new Server() is the same
-
-
 const PORT = 3000;
+
 const io=require('socket.io')(http);
 //we must get server socket io, there are so many different types: http,, client, node, etc
 
 
 // connections=[]
+
 const newsController = require('./controllers/newsController');
 const messageController = require('./controllers/messageController');
-// const userController=require('./controllers/userController')
-
+require('events').EventEmitter.prototype._maxListeners = 100;
 app.use(express.json());
 app.use(express.static('assets'))
 
@@ -24,6 +19,7 @@ app.use(express.static('assets'))
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
+
 const users={}
 let numUsers=0
 // everytime a user loads the website --> gives them their own socket 
@@ -175,10 +171,11 @@ io.on('connection',socket => {
 //   // socket.emit('news',{ key: 'value'})
 // })
 
+
 //'/main' route redirect
-app.get('/main', (req, res) => {
-  res.redirect('/')
-});
+// app.get('/main', (req, res) => {
+//   res.redirect('/')
+// });
 
 // Serve Particle SVG
 app.get('/flare', (req, res) => {
@@ -193,9 +190,24 @@ app.get('/flare', (req, res) => {
     //     [ { title: 'Youtube Title', link: 'youtube.com', picture: 'piclink.com' } ]
     // ]
 
-app.get('/news', newsController.getNews, (req, res) => {
-  res.status(200).json(res.locals.allNews);
+app.get('/firenews', newsController.getfireNews, (req, res) => {
+  res.status(200).json(res.locals.allfireNews);
 });
+app.get('/waternews', newsController.getwaterNews, (req, res) => {
+  res.status(200).json(res.locals.allwaterNews);
+});
+app.get('/earthnews', newsController.getearthNews, (req, res) => {
+  res.status(200).json(res.locals.allearthNews);
+});
+app.get('/windnews', newsController.getwindNews, (req, res) => {
+  res.status(200).json(res.locals.allwindNews);
+});
+app.post('/sign-up/signup', newsController.signup,(req,res) =>{
+  res.sendStatus(200);
+})
+app.post('/sign-up/login', newsController.login, (req,res)=>{
+  res.sendStatus(200);
+})
 // '/alerts' route will respond with an array of alerts from LAFD: {title: 'Alert', link: 'www.alertLink.com'}
 app.get('/alerts', newsController.getAlerts, (req, res) => {
   res.json(res.locals.alerts);
@@ -226,9 +238,12 @@ app.use((err, req, res, next) => {
     res.sendStatus(500);
 });
 
+
 // app.listen(PORT, () => {
 //     console.log(`Server listening on port: ${PORT}`);
 // });
 
 
 http.listen(PORT, () => console.log(`listening on port: ${PORT}`));
+
+
