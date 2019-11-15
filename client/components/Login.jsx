@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
-
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import Axios from 'axios';
 
 
@@ -10,12 +10,14 @@ class Login extends React.Component {
     super();
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      isLoggedIn: false
     };
     this.onChangeInputEmail = this.onChangeInputEmail.bind(this);
     this.onChangeInputPassword = this.onChangeInputPassword.bind(this);
     this.loginButton = this.loginButton.bind(this);
     this.signUpButton = this.signUpButton.bind(this);
+
   }
 
   onChangeInputEmail(e) {
@@ -32,7 +34,7 @@ class Login extends React.Component {
         email: this.state.email,
         password: this.state.password
       })
-      .then(data => console.log(`login has been success ${data}`))
+      .then(data =>this.setState({isLoggedIn:true}))
   }
   //sign up fetch request
   signUpButton() {
@@ -42,11 +44,14 @@ class Login extends React.Component {
         email: this.state.email,
         password: this.state.password
       })
-      .then(data => console.log(`sign up has been success ${data}`))
+      .then(data => this.setState({isLoggedIn:true}))
   }
-
-    
+  
   render() {
+    console.log(this.state.isLoggedIn)
+    if(this.state.isLoggedIn){
+      return <Redirect to="/" />;
+    }
     console.log(this.state.email);
     console.log(this.state.password);
     return (
@@ -81,3 +86,4 @@ class Login extends React.Component {
     )
   }
 }
+export default Login;

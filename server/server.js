@@ -15,9 +15,9 @@ app.get('/', (req, res) => {
 });
 
 //'/main' route redirect
-app.get('/main', (req, res) => {
-  res.redirect('/')
-});
+// app.get('/main', (req, res) => {
+//   res.redirect('/')
+// });
 
 // Serve Particle SVG
 app.get('/flare', (req, res) => {
@@ -47,7 +47,7 @@ app.get('/windnews', newsController.getwindNews, (req, res) => {
 app.post('/sign-up/signup', newsController.signup,(req,res) =>{
   res.sendStatus(200);
 })
-app.get('/sign-up/login', newsController.login, (req,res)=>{
+app.post('/sign-up/login', newsController.login, (req,res)=>{
   res.sendStatus(200);
 })
 // '/alerts' route will respond with an array of alerts from LAFD: {title: 'Alert', link: 'www.alertLink.com'}
