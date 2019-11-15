@@ -1,28 +1,35 @@
 const scraper = require('../utils/scraper')
 const User = require('../models/models.js')
 const newsController = {};
-
+const Message = require('../models/models')
 newsController.signup =(req,res,next) =>{
-  const {email, password} = req.body; 
-    Message.create({email, password}, (err, result) => {
+  const ema = req.body.email;
+  const pass = req.body.password;
+  console.log(ema);
+    Message.create({email:ema, password:pass}, (err, result) => {
         if (err) {
             res.redirect('/sign-up');
+           
         }
         else(
           res.redirect('/')
+          
         )
     });
 }
 newsController.login =(req,res,next) =>{
-  const {email, password} = req.body; 
-    Message.findOne({email:email})
-    .then(results =>
+  const ema = req.body.email; 
+  console.log('inside login');
+  Message.find({email:ema}, (err, result) => {
+    if (err) {
+        res.redirect('/sign-up');
+        
+    }
+    else(
       res.redirect('/')
-    )  
-    .catch(err =>{
-      res.redirect('/sign-up')
-    })
-  
+      
+    )
+});
     
 }
 //getNews middleware scrapes titles and links from source sites, as specified in server.js

@@ -27,7 +27,11 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
+
+      isLoggedIn: false
+
       isSignedIn: false
+
     };
     this.uiConfig = {
       signInFlow: 'popup',
@@ -43,6 +47,7 @@ class Login extends React.Component {
     this.onChangeInputPassword = this.onChangeInputPassword.bind(this);
     this.loginButton = this.loginButton.bind(this);
     this.signUpButton = this.signUpButton.bind(this);
+
   }
 
   componentDidMount() {
@@ -65,7 +70,7 @@ class Login extends React.Component {
         email: this.state.email,
         password: this.state.password
       })
-      .then(data => console.log(`login has been success ${data}`))
+      .then(data =>this.setState({isLoggedIn:true}))
   }
   //sign up fetch request
   signUpButton() {
@@ -75,11 +80,14 @@ class Login extends React.Component {
         email: this.state.email,
         password: this.state.password
       })
-      .then(data => console.log(`sign up has been success ${data}`))
+      .then(data => this.setState({isLoggedIn:true}))
   }
-
-    
+  
   render() {
+    console.log(this.state.isLoggedIn)
+    if(this.state.isLoggedIn){
+      return <Redirect to="/" />;
+    }
     console.log(this.state.email);
     console.log(this.state.password);
     return (
@@ -126,4 +134,5 @@ class Login extends React.Component {
   }
 }
 
-export default Login
+export default Login;
+
