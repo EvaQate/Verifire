@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
+
 import Axios from 'axios';
 import firebase from 'firebase';
 import styledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
@@ -73,6 +75,7 @@ class Login extends React.Component {
       .then(data => console.log(`sign up has been success ${data}`))
   }
 
+    
   render() {
     console.log(this.state.email);
     console.log(this.state.password);
@@ -114,8 +117,7 @@ class Login extends React.Component {
           )}
         </div>
       </div>
+     
     )
   }
 }
-
-export default Login

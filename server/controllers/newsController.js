@@ -1,7 +1,30 @@
 const scraper = require('../utils/scraper')
-
+const User = require('../models/models.js')
 const newsController = {};
 
+newsController.signup =(req,res,next) =>{
+  const {email, password} = req.body; 
+    Message.create({email, password}, (err, result) => {
+        if (err) {
+            res.redirect('/sign-up');
+        }
+        else(
+          res.redirect('/')
+        )
+    });
+}
+newsController.login =(req,res,next) =>{
+  const {email, password} = req.body; 
+    Message.findOne({email:email})
+    .then(results =>
+      res.redirect('/')
+    )  
+    .catch(err =>{
+      res.redirect('/sign-up')
+    })
+  
+    
+}
 //getNews middleware scrapes titles and links from source sites, as specified in server.js
 newsController.getearthNews = (req, res, next) => {
   //SERVING UP LAFD headlines / links / pictures (respectively)
