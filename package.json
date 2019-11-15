@@ -41,7 +41,8 @@
     "react-router-dom": "^5.1.2",
     "react-with-firebase-auth": "^1.1.0",
     "reactstrap": "^8.1.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.0",
