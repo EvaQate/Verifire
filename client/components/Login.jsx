@@ -64,7 +64,7 @@ class Login extends React.Component {
   }
 
   loginButton() {
-    console.log('this is login')
+
     Axios
       .post("/sign-up/login", {
         email: this.state.email,
@@ -74,7 +74,7 @@ class Login extends React.Component {
   }
   //sign up fetch request
   signUpButton() {
-    console.log('this is signup')
+
     Axios
       .post("/sign-up/signup", {
         email: this.state.email,
@@ -84,12 +84,11 @@ class Login extends React.Component {
   }
   
   render() {
-    console.log(this.state.isLoggedIn)
+    
     if(this.state.isLoggedIn){
       return <Redirect to="/" />;
     }
-    console.log(this.state.email);
-    console.log(this.state.password);
+ 
     return (
       <div id="signup">
         <MDBContainer>
